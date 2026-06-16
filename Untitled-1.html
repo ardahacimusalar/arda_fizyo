@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ÖÇB Rehabilitasyon Programı</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    
+    <style>
+    /* --- Modern & Responsive CSS --- */
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        background: linear-gradient(135deg, #f0f2f5, #e0e6ed);
+        color: #2d3436;
+        line-height: 1.6;
+        padding: 10px;
+    }
+
+    .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0,0,0,0);
+    }
+
+    .wrap {
+        max-width: 900px;
+        margin: 1rem auto;
+        padding: 1.5rem;
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    }
+
+    /* --- Üst Başlık Alanı --- */
+    .top-bar {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 8px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #f1f5f9;
+    }
+
+    .title {
+        font-size: 22px;
+        font-weight: 700;
+        color: #1e293b;
+    }
+
+    .subtitle {
+        font-size: 13px;
+        color: #64748b;
+        margin-bottom: 20px;
+        font-style: italic;
+    }
+
+    /* --- Uyarı Çubuğu --- */
+    .warning-bar {
+        background: #fef3c7;
+        border: 1px solid #fde68a;
+        border-radius: 12px;
+        padding: 14px 16px;
+        margin-bottom: 20px;
+        font-size: 13px;
+        color: #92400e;
+        line-height: 1.5;
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+    }
+
+    .warning-bar i {
+        font-size: 18px;
+        color: #d97706;
+        flex-shrink: 0;
+    }
+
+    /* --- Faz Butonları (Yatay Kaydırmalı & Mobil Uyumlu) --- */
+    .phase-row {
+        display: flex;
+        gap: 10px;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding: 4px 2px 12px 2px;
+        margin-bottom: 20px;
+        scrollbar-width: thin;
+        scrollbar-color: #cbd5e1 transparent;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .phase-row::-webkit-scrollbar {
+        height: 6px;
+    }
+
+    .phase-row::-webkit-scrollbar-thumb {
+        background-color: #cbd5e1;
+        border-radius: 10px;
+    }
+
+    .phase-btn {
+        flex-shrink: 0;
+        padding: 10px 18px;
+        border-radius: 20px;
+        border: 1px solid #e2e8f0;
+        background: #f8fafc;
+        color: #64748b;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: all 0.2s ease;
+    }
+
+    .phase-btn:hover {
+        background: #f1f5f9;
+        border-color: #cbd5e1;
+    }
+
+    .phase-btn.active {
+        background: #3498db;
+        border-color: #3498db;
+        color: #fff;
+        box-shadow: 0 4px 12px rgba(52, 152, 219, 0.25);
+    }
+
+    /* --- Bilgilendirme Kartı --- */
+    .info-card {
+        background: #f0f7ff;
+        border: 1px solid #bfdbfe;
+        border-radius: 12px;
+        padding: 16px 20px;
+        margin-bottom: 20px;
+    }
+
+    .info-weeks {
+        font-size: 11px;
+        font-weight: 700;
+        color: #1d4ed8;
+        margin-bottom: 6px;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+    }
+
+    .info-goal {
+        font-size: 14px;
+        color: #334155;
+        margin-bottom: 10px;
+    }
+
+    .info-milestone {
+        font-size: 13px;
+        color: #166534;
+        background: #dcfce7;
+        padding: 6px 12px;
+        border-radius: 8px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-weight: 500;
+    }
+
+    /* --- Gün Seçim Satırı --- */
+    .day-row {
+        display: flex;
+        flex-wrap: wrap; /* Mobilde taşmayı önler */
+        gap: 6px;
+        margin-bottom: 20px;
+    }
+
+    .day-btn {
+        flex: 1;
+        min-width: 110px; /* Mobilde düzgün kırılma sağlar */
+        padding: 10px 8px;
+        text-align: center;
+        background: #fff;
+        color: #475569;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        transition: all 0.15s ease;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+
+    .day-btn:hover:not(.active) {
+        background: #f8fafc;
+        border-color: #cbd5e1;
+    }
+
+    .day-btn.active {
+        background: #e0f2fe;
+        color: #0369a1;
+        border-color: #7dd3fc;
+    }
+
+    .day-tag {
+        font-size: 10px;
+        color: #94a3b8;
+        margin-top: 2px;
+        font-weight: 400;
+    }
+
+    .day-btn.active .day-tag {
+        color: #0284c7;
+    }
+
+    /* --- Egzersiz Listesi ve Akordeon Yapısı --- */
+    .ex-list {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.01);
+    }
+
+    .ex-wrapper {
+        border-bottom: 1px solid #f1f5f9;
+        transition: background-color 0.2s;
+    }
+
+    .ex-wrapper:last-child {
+        border-bottom: none;
+    }
+
+    .ex-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 18px;
+        gap: 12px;
+        cursor: pointer;
+    }
+
+    .ex-row:hover {
+        background: #f8fafc;
+    }
+
+    .ex-row.ice-row {
+        background: #f0f9ff;
+        border-left: 4px solid #3b82f6;
+    }
+
+    .ex-name {
+        font-size: 14px;
+        color: #1e293b;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex: 1;
+    }
+
+    .ex-name::after {
+        content: '▾';
+        font-size: 10px;
+        color: #94a3b8;
+        transition: transform 0.2s;
+    }
+
+    .ex-wrapper.open .ex-name::after {
+        transform: rotate(180deg);
+    }
+
+    .ex-note {
+        font-size: 12px;
+        color: #64748b;
+        margin-top: 1px;
+        font-weight: 400;
+    }
+
+    .ex-sets {
+        font-size: 12px;
+        font-weight: 700;
+        color: #2563eb;
+        white-space: nowrap;
+        text-align: right;
+        background: #eff6ff;
+        padding: 6px 12px;
+        border-radius: 20px;
+        min-width: 75px;
+    }
+
+    .ice-sets {
+        color: #fff;
+        background: #3b82f6;
+    }
+
+    /* Akordeon İçerik Alanı */
+    .ex-details {
+        display: none;
+        background: #f8fafc;
+        padding: 14px 18px;
+        border-top: 1px dashed #e2e8f0;
+    }
+
+    .ex-wrapper.open .ex-details {
+        display: block;
+    }
+
+    .details-title {
+        font-size: 11px;
+        font-weight: 700;
+        color: #475569;
+        text-transform: uppercase;
+        margin-bottom: 3px;
+        letter-spacing: 0.02em;
+    }
+
+    .details-desc {
+        font-size: 13px;
+        color: #334155;
+        margin-bottom: 10px;
+    }
+
+    .details-tip {
+        background: #fffbeb;
+        border-left: 4px solid #d97706;
+        padding: 8px 12px;
+        border-radius: 6px;
+        font-size: 12px;
+        color: #92400e;
+        font-weight: 500;
+    }
+
+    /* --- Alt Grid Yapısı (Responsive Grid) --- */
+    .bottom-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 20px;
+    }
+
+    .card {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.01);
+    }
+
+    .card-title {
+        font-size: 15px;
+        font-weight: 700;
+        margin-bottom: 16px;
+        color: #1e293b;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .rule-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+        border-bottom: 1px dashed #f1f5f9;
+    }
+
+    .rule-row:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+    }
+
+    .rule-icon {
+        font-size: 15px;
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+
+    .rule-text {
+        font-size: 13px;
+        color: #334155;
+        line-height: 1.5;
+    }
+
+    /* --- Zaman Çizelgesi --- */
+    .tl-row {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        margin-bottom: 14px;
+        position: relative;
+    }
+
+    .tl-row:last-child {
+        margin-bottom: 0;
+    }
+
+    .tl-row:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        top: 18px;
+        left: 4px;
+        width: 2px;
+        height: calc(100% - 8px);
+        background: #e2e8f0;
+    }
+
+    .tl-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        margin-top: 6px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .tl-dot.current {
+        background: #10b981;
+        border: 2px solid #fff;
+        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.3);
+    }
+
+    .tl-dot.future {
+        background: #cbd5e1;
+        border: 2px solid #fff;
+    }
+
+    .tl-label {
+        font-size: 12px;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 2px;
+    }
+
+    .tl-text {
+        font-size: 13px;
+        color: #475569;
+        line-height: 1.4;
+    }
+
+    /* --- Ekran Boyut Ayarları --- */
+    @media(max-width: 768px) {
+        .wrap { margin: 0.5rem; padding: 1.2rem; }
+        .title { font-size: 19px; }
+        .day-btn { flex: 1 1 calc(50% - 4px); } /* Mobilde yan yana ikişer buton düzeni */
+    }
+
+    @media(max-width: 480px) {
+        .day-btn { flex: 1 1 100%; } /* Çok küçük ekranlarda alt alta dizilim */
+        .ex-row { padding: 12px 14px; }
+        .ex-name { font-size: 13px; }
+    }
+    </style>
+</head>
+<body>
+
+<h2 class="sr-only">ÖÇB ameliyatı sonrası haftalık rehabilitasyon programı — faz bazlı egzersiz planı</h2>
+
+<div class="wrap">
+
+<div class="top-bar">
+  <i class="ti ti-heart-rate-monitor" style="font-size:24px;color:#e74c3c" aria-hidden="true"></i>
+  <span class="title">ÖÇB rehabilitasyon programı</span>
+</div>
+<p class="subtitle">ÖÇB rekonstrüksiyonu + menisküs + İÇB &nbsp;·&nbsp; Ameliyat sonrası hafta 6–7 &nbsp;·&nbsp; Tam iyileşmeye kadar</p>
+
+<div class="warning-bar">
+  <i class="ti ti-alert-triangle" aria-hidden="true"></i>
+  <div><strong>Önemli Uyarı:</strong> Bu program genel rehber niteliğindedir. Egzersizlerin detaylarını, üzerine tıklayarak görebilirsiniz. Faz geçişlerini mutlaka doktorunuzla onaylayın.</div>
+</div>
+
+<div class="phase-row" id="phaseRow"></div>
+<div class="info-card" id="infoCard"></div>
+<div class="day-row" id="dayRow"></div>
+<div class="ex-list" id="exList"></div>
+
+<div class="bottom-grid">
+  <div class="card">
+    <p class="card-title"><i class="ti ti-ban" style="color:#e74c3c" aria-hidden="true"></i>Kritik kurallar</p>
+    <div class="rule-row"><i class="ti ti-ban rule-icon" style="color:#e74c3c" aria-hidden="true"></i><span class="rule-text"><strong>Leg extension makinesi</strong> — ilk 6 ay kesinlikle yapma</span></div>
+    <div class="rule-row"><i class="ti ti-ban rule-icon" style="color:#e74c3c" aria-hidden="true"></i><span class="rule-text"><strong>Pivot / ani dönüş</strong> — ilk 4 ay yasak</span></div>
+    <div class="rule-row"><i class="ti ti-ban rule-icon" style="color:#e74c3c" aria-hidden="true"></i><span class="rule-text"><strong>Zıplama / koşu</strong> — doktor onayı olmadan başlama</span></div>
+    <div class="rule-row"><i class="ti ti-ban rule-icon" style="color:#e74c3c" aria-hidden="true"></i><span class="rule-text"><strong>Derin squat</strong> — 3. aya kadar 90° geçme</span></div>
+    <div class="rule-row"><i class="ti ti-check rule-icon" style="color:#2ecc71" aria-hidden="true"></i><span class="rule-text">Her antrenmanda 15–20 dk buz — kesinlikle</span></div>
+    <div class="rule-row"><i class="ti ti-check rule-icon" style="color:#2ecc71" aria-hidden="true"></i><span class="rule-text">Ağrı eşiği 1–3/10 normal, üzeri = dur</span></div>
+    <div class="rule-row"><i class="ti ti-check rule-icon" style="color:#2ecc71" aria-hidden="true"></i><span class="rule-text">Şişlik artarsa o gün dur, buz uygula</span></div>
+    <div class="rule-row"><i class="ti ti-check rule-icon" style="color:#2ecc71" aria-hidden="true"></i><span class="rule-text">Aylık doktor kontrolünü ihmal etme</span></div>
+  </div>
+  
+  <div class="card">
+    <p class="card-title"><i class="ti ti-timeline" style="color:#3498db" aria-hidden="true"></i>İyileşme zaman çizelgesi</p>
+    <div class="tl-row"><div class="tl-dot current"></div><div><div class="tl-label">Hafta 7–8</div><div class="tl-text">Salon başlangıcı, temel kuvvet</div></div></div>
+    <div class="tl-row"><div class="tl-dot future"></div><div><div class="tl-label">Hafta 9–10</div><div class="tl-text">Kuvvetlendirme, merdiven inme</div></div></div>
+    <div class="tl-row"><div class="tl-dot future"></div><div><div class="tl-label">Hafta 11–14</div><div class="tl-text">İleri kuvvet, tek bacak egzersizler</div></div></div>
+    <div class="tl-row"><div class="tl-dot future"></div><div><div class="tl-label">Ay 4–4.5</div><div class="tl-text">Fonksiyonel güç, koşu hazırlığı</div></div></div>
+    <div class="tl-row"><div class="tl-dot future"></div><div><div class="tl-label">Ay 5–7</div><div class="tl-text">Pliometrik, çeviklik</div></div></div>
+    <div class="tl-row"><div class="tl-dot future"></div><div><div class="tl-label">Ay 7–12</div><div class="tl-text">Tam performans, spora dönüş</div></div></div>
+  </div>
+</div>
+
+</div>
+
+<script>
+// --- MERKEZİ HAREKET AÇIKLAMA HAVUZU ---
+const EX_GUIDE = {
+  "Sabit bisiklet": {
+    d: "Sele boyunu, diziniz en alttayken hafif bükülü (yaklaşık 15°) kalacak şekilde ayarlayın. Direnci çok düşük tutarak akıcı pedallayın.",
+    t: "Diz bükme açısını zorlamadan eklem hareketliliğini (ROM) artırmak için ideal ısınmadır."
+  },
+  "Leg press": {
+    d: "Ayakları omuz genişliğinde yerleştirin. Ağırlığı kontrollü indirin, diz büküm açısı 60°'yi geçmesin (İlerleyen fazlarda 90°'ye kadar esneyebilir).",
+    t: "İtici gücü topuklardan alın, dizlerin içeri doğru kaçmasına (valgus) kesinlikle izin vermeyin."
+  },
+  "Hamstring curl (yatarak)": {
+    d: "Yüzüstü yatıp pedalı topuklarınızın arkasına oturtun. Dizleri kontrollü bükerek pedalı kalçaya yaklaştırın ve yavaşça indirin.",
+    t: "Menisküs ve greft koruması için özellikle hamstring kuvveti çok kritiktir. Ani salınımlardan kaçının."
+  },
+  "Calf raise – çift bacak": {
+    d: "Düz ayakta dururken parmak uçlarında gövdeyi yukarı doğru yükseltin. Tepe noktasında 1-2 saniye sıkıştırıp yavaşça inin.",
+    t: "Denge kaybını önlemek için bir duvardan veya barda hafifçe destek alabilirsiniz."
+  },
+  "Calf raise (çift bacak)": {
+    d: "Gövdeyi dik tutarak parmak ucuna yükselin, topukları yavaşça yere indirin.",
+    t: "Aşil tendonu ve kalf gücü yürüyüş mekaniğini düzeltir."
+  },
+  "Hip abduction makinesi": {
+    d: "Dik oturun, bacakları dışarı doğru açarak kalçanın yan tarafını (gluteus medius) sıkıştırın.",
+    t: "Kalça stabilizatörleri diz üzerindeki yükü doğrudan azaltır."
+  },
+  "Hip adduction makinesi": {
+    d: "Bacakları kontrollü olarak içe doğru kapatın ve yavaşça serbest bırakın.",
+    t: "Kas dengesini korumak için abdüktör egzersizleriyle eşit dirençte yapın."
+  },
+  "Diz altı rulo düzleştirme": {
+    d: "Dizinizin altına rulo havlu koyun, uyluk kasınızı (quadriceps) sıkarak topuğu hafifçe yerden kaldırın ve dizin arkasıyla ruloyu ezin.",
+    t: "Terminal diz ekstansiyonunu (tam düzleştirme) geri kazanmak için kritik öneme sahiptir."
+  },
+  "Düz bacak kaldırma": {
+    d: "Sırt üstü yatın, sağlam dizi bükün. Ameliyatlı bacağı dümdüz kilitli tutarak yaklaşık 30 cm yukarı kaldırın, bekletip indirin.",
+    t: "Hareket boyunca dizin kesinlikle bükülmemesi (quad lag olmaması) gerekir."
+  },
+  "Dört yönlü lastik": {
+    d: "Ayak bileğine bağlanan direnç lastiği ile bacağı kontrollü olarak öne, arkaya, içe ve dışa doğru hareket ettirin.",
+    t: "Gövdeyi dik tutun, hareketi savurarak değil kalça kaslarından başlatın."
+  },
+  "Penguen dengesi": {
+    d: "Ayaklar bitişik, gövde hafif esnek pozisyonda ağırlığı bir bacaktan diğerine kontrollü aktararak dengeyi koruyun.",
+    t: "Propriosepsiyon (derin duyu) mekanizmasını yeniden canlandırır."
+  },
+  "Buz": {
+    d: "Dizin üzerine ve altına ince bir havlu üzerinden buz paketini sarın. Bacağı uzatarak yüksekte dinlendirin.",
+    t: "Her antrenman sonu şişlik ve enflamasyonu baskılamak adına zorunludur."
+  },
+  "Bench press / chest press makinesi": {
+    d: "Sırtı sehpa veya koltuğa tam yaslayarak ağırlığı göğüs hizasında ileri doğru itin.",
+    t: "Ayaklarınızı yere basarken ameliyatlı bacağı ani kasıp zorlamamaya dikkat edin."
+  },
+  "Lat pulldown": {
+    d: "Bardan genişçe kavrayıp göğsün üst kısmına doğru kontrollü çekiş yapın.",
+    t: "Oturma pozisyonunda diz pedallarının bacağa sert baskı yapmamasına dikkat edin."
+  },
+  "Shoulder press": {
+    d: "Dumbbell veya makine ile ağırlığı baş seviyesinden yukarı doğru dik itin.",
+    t: "Core bölgesini sabit ve sıkı tutun."
+  },
+  "Bicep curl": {
+    d: "Dirsekleri gövdeye sabitleyerek ağırlığı omuz hizasına bükün.",
+    t: "Ayakta yapıyorsanız ağırlığı bacaklardan destek alarak savurmayın."
+  },
+  "Tricep pushdown": {
+    d: "Kablolu istasyonda dirsekleri sabitleyip elleri aşağı doğru presleyin.",
+    t: "Sadece ön kol hareket etmeli, vücut öne çökmemelidir."
+  },
+  "Plank (dirsek)": {
+    d: "Dirsekler ve ayak parmak uçlarında vücudu dümdüz tutun. Karın ve kalçayı maksimum sıkın.",
+    t: "Kalçayı çok yukarı kaldırmayın veya aşağı sarkıtıp beli zorlamayın."
+  },
+  "Bird-dog": {
+    d: "Emekleme pozisyonunda zıt kol ve zıt bacağı gövdeyle paralel olana kadar uzatın, 2 sn bekleyin.",
+    t: "Bacağı yukarı kaldırırken dizi bükmeyin, kalçadan uzatın."
+  },
+  "Side plank": {
+    d: "Yan dönerek dirsek üzerinde vücudu kaldırın. Ameliyatlı bacak üstte kalacak şekilde (sağlam taraf altta) pozisyonu koruyun.",
+    t: "F1 safhasında ameliyatlı tarafa doğrudan yük bindirmemek için sağlam tarafı alta alın."
+  },
+  "Crunch": {
+    d: "Dizler bükülü sırt üstü yatarken sadece kürek kemikleri yerden kalkacak şekilde karın kasını sıkıştırın.",
+    t: "Boynunuzu ellerinizle çekiştirmeyin, yükü tamamen karına verin."
+  },
+  "Tek bacak duruş": {
+    d: "Ameliyatlı bacak üzerinde tüm gövde ağırlığı ile dengede durun. Elleri yanda serbest bırakabilirsiniz.",
+    t: "Diz kapağının içe dönmesini engelleyin, ayak tabanını yere sağlam sabitleyin."
+  },
+  "Terminal knee extension (lastikle)": {
+    d: "Direnç lastiğini sabit bir yere bağlayıp diz arkasına geçirin. Diz hafif bükülüyken lastiğe karşı direnç göstererek bacağı tam kilitleyin.",
+    t: "Vastus medialis (iç uyluk) kasını uyandırmak için tepe noktasında uyluğu iyice sıkın."
+  },
+  "Mini step-up": {
+    d: "5-10 cm'lik düşük bir basamağa ameliyatlı bacakla çıkın, sağlam bacağı yanına çekin ve kontrollü geri inin.",
+    t: "İnerken ve çıkarken dizin öne/içe doğru titremesini engelleyin."
+  },
+  "Lateral band walk": {
+    d: "Dizlerin veya ayak bileklerinin üzerine lastik bağlayıp yarım squat pozisyonunda yanlara doğru adım atın.",
+    t: "Ayakların birbirine tamamen kapanmasına izin vermeyin, lastikteki gerginlik sürekli korunsun."
+  },
+  "Bisiklet pedal (sırt üstü)": {
+    d: "Sırt üstü yatarken bacakları havaya kaldırıp hayali bisiklet pedalı çevirme hareketi yapın.",
+    t: "Eklem hareket sınırını ağrısız şekilde genişletir."
+  },
+  "Quadriceps esneme": {
+    d: "Ayakta dururken topuğu kalçaya doğru çekip uyluk önünü esnetin.",
+    t: "Dizi aşırı hiper-fleksiyona (tam bükülmeye) zorlamadan hafif gerginlikte bırakın."
+  },
+  "Hamstring esneme": {
+    d: "Topuğu öne uzatıp parmak ucunu kendinize çekin, sırtı bükmeden hafifçe öne eğilin.",
+    t: "Diz arkasında (popliteal bölge) tatlı bir gerilim hissedilmeli, keskin ağrı olmamalıdır."
+  },
+  "Hip flexor esneme": {
+    d: "Lunge pozisyonuna gelin, arkadaki bacağın üst-ön kısmını esnetmek için kalçayı hafifçe öne itin.",
+    t: "Gövdeyi dik tutun."
+  },
+  "Ayak bileği mobilizasyonu": {
+    d: "Ayak bileği ile havada daireler çizin veya parmak ucunu kendinize çekip itin.",
+    t: "Ödem birikimini engeller ve kan dolaşımını hızlandırır."
+  },
+  "Tam dinlenme": {
+    d: "Kasların ve greft dokusunun rejenerasyonu (iyileşmesi) için bacağı yüksekte tutarak dinlendirin.",
+    t: "Şişlik durumuna göre gün içinde ekstra 15 dk hafif düz yürüyüş yapılabilir."
+  },
+  "Romanian deadlift (iki el)": {
+    d: "Ayaklar omuz genişliğinde. Sırtı düz tutarak kalçayı geriye doğru itin ve ağırlığı kaval kemiği hizasında indirin.",
+    t: "Dizleri fazla bükmeyin, bu bir squat değil; menteşe hareketidir (kalçadan bükülme)."
+  },
+  "Hamstring curl": {
+    d: "Makinede oturarak veya yatarak topukları kalçaya doğru bükün, ağırlığı kontrollü bırakın.",
+    t: "Eksantrik evrede (bacağı uzatırken) hareketi yavaşlatarak kontrol edin."
+  },
+  "Hip thrust (bilateral)": {
+    d: "Sırtı sehpaya yaslayıp ayakları yere basın. Kalçayı yukarı kaldırarak tepe noktasında glute kaslarını sıkın.",
+    t: "Yukarı kalktığınızda dizleriniz 90 derece açı yapmalıdır."
+  },
+  "Step-up 15 cm": {
+    d: "15 cm'lik basamağa ameliyatlı bacakla basarak gövdeyi yükseltin.",
+    t: "Yukarı çıkarken gücü tamamen ameliyatlı bacağın topuğundan alın."
+  },
+  "Wall sit": {
+    d: "Sırtı duvara yaslayıp 60-90° arasına çökün ve pozisyonu sabit şekilde koruyun.",
+    t: "Ağırlığı parmak ucuna değil, topuklara vererek quads kaslarını izometrik kasın."
+  },
+  "Terminal knee extension": {
+    d: "Lastik direncine karşı dizinizi tam düz pozisyona getirip quad kasını kilitleyin.",
+    t: "Tam ekstansiyon (0 derece gerilme) yürüyüşün aksamaması için şarttır."
+  },
+  "Incline bench press": {
+    d: "Eğimli sehpada dumbbell veya barı göğüs üstünden yukarı doğru presleyin.",
+    t: "Gövde dengesini sıkı koruyun."
+  },
+  "Seated row": {
+    d: "Kablolu istasyonda dik oturup kolları karnın alt kısmına doğru çekerek kürek kemiklerini sıkıştırın.",
+    t: "Çekiş esnasında belden arkaya doğru çok fazla bükülmeyin."
+  },
+  "Dumbbell curl": {
+    d: "Ayakta veya oturarak dumbbell'ları avuç içleri yukarı bakacak şekilde bükün.",
+    t: "Gövdenin sallanmasını engelleyin."
+  },
+  "Skull crusher": {
+    d: "Sehpaya sırt üstü yatıp barı alın hizasına indirip dirsekleri bozmadan yukarı doğru kilitleyin.",
+    t: "Dirseklerin dışa doğru açılmamasına özen gösterin."
+  },
+  "Plank (dirsek) (ilerlemiş)": {
+    d: "Süreyi artırarak karın duvarını ve stabilizatör kasları maksimum izometrik kasın.",
+    t: "Dizlerin yere sarkmamasına dikkat edin, bacaklar kilitli olsun."
+  },
+  "Dead bug": {
+    d: "Sırt üstü yatın, alanine yukarıda, dizler 90° havada. Zıt kol ve zıt bacağı yere değdirmeden uzatın.",
+    t: "Bel boşluğunun hareket boyunca yerle teması kesilmemelidir (beli yere bastırın)."
+  },
+  "Cable core rotation": {
+    d: "Kablo istasyonunda yan durup kolları bükmeden gövdeyi dönüş yönüne doğru döndürün.",
+    t: "Dönüşü dizden değil, tamamen kor (omurga/karın) bölgesinden yapın; diz sabit kalmalı."
+  },
+  "Reverse crunch": {
+    d: "Sırt üstü yatarken dizleri bükülü şekilde göğse doğru çekip kalçayı hafifçe yerden yuvarlayın.",
+    t: "Bacakları aşağı indirirken kontrolü elden bırakmayın."
+  },
+  "Denge tahtası (çift bacak)": {
+    d: "Denge tahtası üzerine çıkıp dizleri hafif bükerek stabil pozisyonda kalmaya çalışın.",
+    t: "Diz mikro-stabilizatörlerini ve proprioseptif duyuyu tetikler."
+  },
+  "Tek bacak deadlift (ağırlıksız)": {
+    d: "Ameliyatlı bacak üzerinde dururken gövdeyi öne eğip diğer bacağı arkaya dümdüz uzatın.",
+    t: "Denge bileşenini artırmak için kalçanın dışa dönmesini engelleyin."
+  },
+  "Lateral band walk (ağır lastik)": {
+    d: "Daha sert bir lastikle lateral adımlamalar yaparak kalça yan kaslarını zorlayın.",
+    t: "Dizin içe çökme eğilimine karşı lastiği dışarı doğru sürekli presleyin."
+  },
+  "Monster walk": {
+    d: "Yarım squat pozisyonunda, bacaklar açık şekilde öne ve arkaya doğru çapraz adımlarla yürüyün.",
+    t: "Dizlerin içe valgus pozisyonuna gelmesini aktif olarak engelleyin."
+  },
+  "Step-down 10 cm (kontrollü)": {
+    d: "Basamaktan ameliyatlı bacak üzerinde yavaşça çökerek sağlam bacağın topuğunu yere hafifçe değdirip tekrar yükselin.",
+    t: "Rehabilitasyonun en kritik hareketlerindendir. Eksantrik kontrolü sağlar. Diz öne fırlamamalıdır."
+  },
+  "Mini squat 60°": {
+    d: "Ayaklar omuz genişliğinde, kalçayı geriye vererek kontrollü 60 dereceye kadar çökün.",
+    t: "Ağırlığı topuklara dağıtın, dizlerin öne gitmesini sınırlayın."
+  },
+  "Tam vücut esneme": {
+    d: "Tüm ana kas gruplarını statik olarak 20-30 saniye boyunca gerdirin.",
+    t: "Kas boyunu optimize ederek eklem üzerindeki baskıyı azaltır."
+  },
+  "Foam roller": {
+    d: "Silindir köpük üzerinde uyluk önü, yan (IT band) ve arka bacak kaslarını yuvarlayarak masaj yapın.",
+    t: "Tetik noktaları gevşeterek myofasial rahatlama sağlar. Ameliyat yarasının üzerine doğrudan basmayın."
+  },
+  "Sabit bisiklet / elliptical": {
+    d: "Elliptical cihazında veya bisiklette orta direnç seviyesinde kardiyo yapın.",
+    t: "Koşu öncesi eklemi darbesiz yüklenmeye alıştırır."
+  },
+  "Leg press (ağır)": {
+    d: "Yüksek ağırlıklarla, kontrollü tempo ile bacakları presleyin.",
+    t: "Hipertrofi ve saf kuvvet kazanımı için itiş gücünü tamamen topuktan uygulayın."
+  },
+  "Romanian deadlift (ağır)": {
+    d: "Ağırlığı artırarak arka zincir (hamstring/glute) kaslarını yükleyin.",
+    t: "Omurganın düzlüğünü kesinlikle bozmayın."
+  },
+  "Bulgarian split squat": {
+    d: "Sağlam ayağı arkada bir sehpaya koyun. Öndeki ameliyatlı bacakla kontrollü şekilde çöküp yükselin.",
+    t: "Diz kapağının ayak parmak ucunu geçmemesine ve içe kaçmamasına azami dikkat gösterin."
+  },
+  "Hip thrust (bilateral, ağırlıklı)": {
+    d: "Kucağınıza bar veya dumbbell alarak kalça köprüsü hareketini uygulayın.",
+    t: "Tepe noktasında kalçayı tam kilitleyip quads ve glute kaslarını birleştirin."
+  },
+  "Step-up 25–30 cm": {
+    d: "Daha yüksek bir kutuya ameliyatlı bacakla kontrollü çıkış yapın.",
+    t: "Gövdeyi öne çok fazla bükerek ivme almayın, saf bacak kuvvetiyle yükselin."
+  },
+  "Lateral step-up": {
+    d: "Kutuya yan basarak ameliyatlı bacakla gövdeyi yukarı doğru taşıyın.",
+    t: "Dizin dış yan bağ stabilizasyonunu pekiştirir."
+  },
+  "Calf raise (tek bacak başlangıcı)": {
+    d: "Tüm yükü ameliyatlı bacağa vererek parmak ucunda yükselin.",
+    t: "Tek bacak kuvvet simetrisini yakalamak için önemlidir."
+  },
+  "Bench press": {
+    d: "Barı göğse indirip patlayıcı kuvvetle yukarı itin.",
+    t: "Sırtı sehpaya ark yaparken bacakları gereksiz sarsmayın."
+  },
+  "Weighted pull-up / lat pulldown": {
+    d: "Ağırlıklı olarak barfiks çekin veya lat pulldown istasyonunda çalışın.",
+    t: "Sırt kaslarını stabilize eder."
+  },
+  "Arnold press": {
+    d: "Dumbbell'ları avuç içi yüzünüze bakacak şekilde başlatıp yukarı iterken dışarı döndürün.",
+    t: "Omuz mobilitesini geliştirir."
+  },
+  "Hammer curl": {
+    d: "Dumbbell'ları nötr (çekiç) tutuşla yukarı bükün.",
+    t: "Ön kol kuvvetini destekler."
+  },
+  "Close-grip bench": {
+    d: "Barı dar tutuşla kavrayıp göğse indirerek triceps odaklı itin.",
+    t: "Dirsekleri gövdeye yakın tutun."
+  },
+  "Ab wheel rollout": {
+    d: "Dizlerin üzerinde karın tekerleğini öne doğru uzatıp geri çekin.",
+    t: "Belin çökmemesi için kor bölgesini aksimum sıkı tutun."
+  },
+  "Pallof press": {
+    d: "Kabloyu göğüs hizasında tutup ileri uzatın ve yan çekim gücüne karşı gövdeyi sabit tutun (anti-rotasyon).",
+    t: "Omurga stabilitesi ve diz dengesi için gizli kahraman egzersizlerdendir."
+  },
+  "Copenhagen plank": {
+    d: "Üstteki bacağı sehpa üzerine koyup alttaki bacağı havada tutarak yan plank pozisyonunda bekleyin.",
+    t: "Kasık (adduktör) kaslarını muazzam güçlendirir; diz koruması için elzemdir."
+  },
+  "Tek bacak denge (soft zemin)": {
+    d: "BOSU veya sünger zemin üzerinde tek bacak dengede kalarak pozisyonu koruyun.",
+    t: "Zeminin kararsızlığı dizdeki reseptörleri maksimum düzeyde çalıştırır."
+  },
+  "Squat 70–80°": {
+    d: "Kontrollü şekilde, kalçayı dışarı vererek 90 dereceye yaklaşacak şekilde squat yapın.",
+    t: "Dizlerin içe çökmesini önlemek için diz dışına hafif bir lastik bağlayabilirsiniz."
+  },
+  "BOSU ball çift bacak duruş": {
+    d: "BOSU ball'un yuvarlak kısmında dengede kalarak küçük yaylanmalar yapın.",
+    t: "Diz eklemindeki dinamik stabilizasyonu artırır."
+  },
+  "Lateral band walk (ağır)": {
+    d: "Yuan yan adımlamalar yapın.",
+    t: "Gluteus medius gücünü zirveye taşır."
+  },
+  "Mini lunge (statik, kısa mesafe)": {
+    d: "Öne kısa bir adım atıp arka dizi hafifçe yere yaklaştırın ve başlangıç pozisyonuna dönün.",
+    t: "Öne adım atarken diz mekaniğine odaklanın, diz öne fırlamasın."
+  },
+  "Elliptical veya bisiklet": {
+    d: "30 dakika boyunca akıcı aktif dinlenme temposunda çalışın.",
+    t: "Dolaşımı artırarak kaslardaki laktik asit birikimini temizler."
+  },
+  "Esneme + foam roller": {
+    d: "Foam roller ile masaj yapıp ardından statik esnemeleri tamamlayın.",
+    t: "Diz çevresi dokuların esnekliğini korur."
+  },
+  "Yürüyüş bandı / hafif koşu": {
+    d: "Doktor onayı alındıktan sonra, düz bantta topuk-parmak ucu mekaniğine dikkat ederek hafif tempo koşuya başlayın.",
+    t: "Darbe emilimini kontrol etmek için mutlaka iyi sönümlemeli bir ayakkabı kullanın."
+  },
+  "Leg press (tek bacak başlangıcı)": {
+    d: "Yükü tamamen tek bacağa indirerek, hafif kilolarla tek bacak itişi yapın.",
+    t: "İki bacak arasındaki kuvvet farkını (asimetriyi) kapatmak için zorunludur."
+  },
+  "Single-leg Romanian deadlift": {
+    d: "Hafif bir dumbbell alarak tek bacak üzerinde Romanian deadlift yapın.",
+    t: "Arka zincir stabilitesini ve ayak bileği-diz koordinasyonunu maksimuma çıkarma hedefidir."
+  },
+  "Hip thrust (tek bacak)": {
+    d: "Tek ayağı yere basarak kalçayı yukarı itin, diğer bacak havada kalsın.",
+    t: "Kalça kasının tek taraflı patlayıcı gücünü artırır."
+  },
+  "Bulgarian split squat (ağırlıklı)": {
+    d: "Dumbbell'ları ellere alarak Bulgarian split squat hareketini derinleştirin.",
+    t: "Ön bacak kuvvet dengesizliğini yok etmek için harika bir tek taraflı harekettir."
+  },
+  "Lateral lunge": {
+    d: "Yana doğru geniş bir adım atıp o taraftaki kalçayı geriye vererek çökün, diğer bacak düz kalsın.",
+    t: "Dizin lateral (yan) düzlemdeki yük taşıma kapasitesini geliştirir."
+  },
+  "Step-up 40 cm": {
+    d: "40 cm'lik yüksek platforma tek bacakla güçlü bir çıkış yapın.",
+    t: "Spora dönüş öncesi fonksiyonel dikey kuvveti artırır."
+  },
+  "Hamstring curl (tek bacak geçişi)": {
+    d: "Ağırlığı tek bacakla çekip iki bacakla bırakın veya tamamen tek bacakla izole edin.",
+    t: "Hamstring greft alanının tendon kalitesini ve gücünü pekiştirir."
+  },
+  "Barbell bench press": {
+    d: "Barbell ile nizami bench press uygulayın.",
+    t: "Üst vücut itiş gücünü maksimuma ulaştırır."
+  },
+  "Weighted pull-up": {
+    d: "Kemerinize ağırlık plakası bağlayarak barfiks çekin.",
+    t: "Çekiş kuvvetini ve core katılımını artırır."
+  },
+  "Overhead press": {
+    d: "Ayakta, barbell'ı göğüsten yukarıya doğru kafayı hafif geri çekerek dik presleyin.",
+    t: "Tüm vücut stabilizasyonunu zorlar."
+  },
+  "Dumbbell row": {
+    d: "Sehpaya tek dizinizi koyup tek kolla dumbbell çekişi yapın.",
+    t: "Sırt kaslarını tek taraflı izole eder."
+  },
+  "Dips": {
+    d: "Paralel barlarda gövdeyi aşağı indirip triceps ve göğüs kuvvetiyle kendinizi yukarı itin.",
+    t: "Omuz sağlığı için kontrollü derinliğe inin."
+  },
+  "Dragon flag (yavaş)": {
+    d: "Sehpanın üst kısmından tutunarak tüm gövdeyi düz bir direk gibi havaya kaldırıp yavaşça indirin.",
+    t: "İleri seviye kor gücü sağlar."
+  },
+  "Weighted plank": {
+    d: "Sırtınıza plaka koydurarak plank pozisyonunda bekleyin.",
+    t: "Karın duvarının dayanıklılığını artırır."
+  },
+  "Russian twist": {
+    d: "Otururken ayakları hafif kaldırıp ağırlığı sağa ve sola döndürün.",
+    t: "Oblik (yan karın) kaslarını güçlendirir."
+  },
+  "BOSU ball tek bacak denge": {
+    d: "BOSU'nun üzerinde tek bacak durarak top yakalama veya küçük squatlar yapın.",
+    t: "Dinamik eklem stabilizasyonunun zirve noktalarındandır."
+  },
+  "Lateral shuffle (lastikle)": {
+    d: "Lastik takılıyken atletik duruşta yana doğru hızlı ve kısa adımlarla kayma (shuffle) yapın.",
+    t: "Yanal yön değişimleri öncesi bağların elastik yükünü artırır."
+  },
+  "Squat (tam derinlik hedefi)": {
+    d: "Doktor onayı doğrultusunda, kalçayı diz seviyesinin altına indirecek şekilde tam squat yapın.",
+    t: "Tam hareket açıklığında diz gücünü ve bağ esnekliğini geri kazandırır."
+  },
+  "Box tap": {
+    d: "Kutunun önünde durup parmak uçlarınızı hızlıca kutunun üstüne değdirip geri indirin.",
+    t: "Kardiyovasküler kapasiteyi ve çevikliği tetikler."
+  },
+  "Defensive shuffle": {
+    d: "Basketbol savunma pozisyonunda sağa ve sola hızlı shuffle adımları atın.",
+    t: "Spora özgü reaksiyon süresini ve yanal hızı artırır."
+  },
+  "Mini cone agility": {
+    d: "Yere dizilen koniler arasında 8 çizerek veya zikzak yaparak hafif tempo koşun.",
+    t: "Yön değiştirme mekaniğinin ilk adımıdır, dönüşlerde gövdeyi dik tutun."
+  },
+  "Yoga / esneme": {
+    d: "Dizi zorlamayan yoga akışları ve derin statik esnemeler uygulayın.",
+    t: "Zihinsel ve bedensel toparlanmayı (recovery) hızlandırır."
+  },
+  "Koşu bandı": {
+    d: "Hızı kademeli artırarak tempo koşuları veya intervaller yapın.",
+    t: "Koşu mekaniğinin tam normalleşmesini hedefler."
+  },
+  "Barbell squat (tam derinlik)": {
+    d: "Sırtınıza barbell alarak tam derinlikte squat uygulayın.",
+    t: "Alt vücut mutlak kuvvetini eski haline getirmek için anahtar harekettir."
+  },
+  "Leg press – tek bacak (ağır)": {
+    d: "Tek bacakla yüksek ağırlık presleyerek kuvvet asimetrisini sıfırlayın.",
+    t: "Ameliyatlı bacağın gücü, sağlam bacağın en az %90'ına ulaşmalıdır."
+  },
+  "Box jump 30 cm": {
+    d: "6. aydan sonra doktor onayıyla, 30 cm kutuya çift bacak patlayıcı sıçrayın ve yumuşak konun.",
+    t: "Yere iniş anında dizlerin içe kaçmamasına (valgus) azami dikkat gösterin."
+  },
+  "Jump squat": {
+    d: "7. aydan sonra, squat pozisyonundan yukarıya doğru patlayıcı sıçrayın, yumuşak konun.",
+    t: "Eksantrik darbe emilim kapasitesini maksimuma ulaştırır."
+  },
+  "Hip thrust (ağır)": {
+    d: "Barbell ile yüksek ağırlık kalça köprüsü yaparak kalçayı patlayıcı kilitleyin.",
+    t: "Sprinting ve zıplama performansını doğrudan besler."
+  },
+  "Bench press (maksimum)": {
+    d: "5x5 protokolü ile güç odaklı ağır bench press yapın.",
+    t: "Üst vücut saf kuvvetini artırır."
+  },
+  "Weighted pull-up (maksimum)": {
+    d: "Düşük tekrar, yüksek ağırlık prensibiyle barfiks çekin.",
+    t: "Üst vücut çekiş kuvvetini zirveye taşır."
+  },
+  "Military press": {
+    d: "Barbell'ı ayakta göğüsten yukarıya dik presleyin, gövdeyi sabit tutun.",
+    t: "Tüm kinetik zinciri (ayak bileğinden el bileğine) bağlar."
+  },
+  "Barbell row": {
+    d: "Öne eğilerek barbell'ı karnınıza doğru çekip sırtı kasın.",
+    t: "Postür ve çekiş gücü sağlar."
+  },
+  "Dips (ağırlıklı)": {
+    d: "Beline plaka bağlayarak barlarda dips hareketini tamamlayın.",
+    t: "Triceps ve alt göğüs gücünü maksimize eder."
+  },
+  "Ab wheel": {
+    d: "Karın kaslarını tam uzatarak tekerlek hareketini gerçekleştirin.",
+    t: "Core gücünü üst seviyede tutar."
+  },
+  "Cable woodchop": {
+    d: "Kabloda rotasyonel çekiş yapın.",
+    t: "Rotasyonel kuvveti artırır, dönüşlerde diz bağlarını korur."
+  },
+  "Sprint protokolü": {
+    d: "Kademeli hızlanarak (%50, %75, %90) düz çizgi sprintleri atın ve kontrollü yavaşlayın.",
+    t: "Frenleme (yavaşlama) anında diz bağlarına binen yükü kontrol etmeyi öğretir."
+  },
+  "Lateral cutting drills": {
+    d: "Koşarken aniden sağa veya sola keskin yön değiştirme adımları (cutting) atın.",
+    t: "ÖÇB'nin en çok zorlandığı andır. Doktor onayı şarttır. Kusursuz mekanik istenir."
+  },
+  "Cone agility": {
+    d: "Coniler arasında slalom veya zikzak drilleri yapın.",
+    t: "Spora dönüş öncesi çeviklik ve yön değiştirme refleksini tamamlar."
+  },
+  "Pliometrik lunge": {
+    d: "Lunge pozisyonunda havaya sıçrayarak bacakları havada değiştirip diğer bacakla lunge'a konun.",
+    t: "Maksimum patlayıcı güç ve eksantrik frenleme koordinasyonu ister."
+  },
+  "Sled push (hafif)": {
+    d: "Ağırlık kızağını öne doğru parmak uçlarında güçlü adımlarla itin.",
+    t: "Dizi darbesiz şekilde muazzam bir patlayıcı güce ulaştırır."
+  },
+  "Single leg hop (kontrollü)": {
+    d: "Tek bacak üzerinde öne doğru sıçrayıp, yine aynı tek bacak üzerinde stabil ve dengeli şekilde konun.",
+    t: "Spora dönüş testlerinin (Hop test) en önemli aşamasıdır. İki bacak dengesi ölçülür."
+  },
+  "Yüzme veya elliptical": {
+    d: "Havuzda serbest stil yüzün veya elliptical cihazında kardiyo yapın.",
+    t: "Eklemleri dinlendirirken kardiyovasküler seviyeyi korur."
+  },
+  "Sprint & yön değiştirme": {
+    d: "Sahanın içinde tam hız sprint atın, aniden durup geriye veya yana kaçışlar yapın.",
+    t: "Gerçek müsabaka şartlarına hazırlık evresidir."
+  },
+  "Barbell back squat": {
+    d: "Kendi vücut ağırlığınızın üstündeki yüklerle tam squat serileri yapın.",
+    t: "Bacak hacmini ve gücünü tamamen eşitler."
+  },
+  "Olympic lift hazırlığı": {
+    d: "Squat clean, power snatch gibi olimpik kaldırışların teknik varyasyonlarını uygulayın.",
+    t: "Tüm vücut patlayıcı gücünü ve koordinasyonunu maksimuma ulaştırır."
+  },
+  "Çeviklik merdiveni": {
+    d: "Yerdeki koordinasyon merdiveninde hızlı ayak adımları çalışın.",
+    t: "Nöromüsküler hız ve çevikliği kusursuzlaştırır."
+  },
+  "Pliyometrik sıçrama": {
+    d: "Depth jump (kutudan düşüp anında yukarı sıçrama) antrenmanları yapın.",
+    t: "Reaktif güç indeksini ve tendon elastikiyetini zirveye çıkarır."
+  },
+  "Spora özgü driller": {
+    d: "Kendi branşınıza özgü top sürme, şut veya ani yönlenme hareketlerini yapın.",
+    t: "Kas hafızasını ve branş reflekslerini geri kazandırır."
+  },
+  "Dönemsel hop testi": {
+    d: "Tek bacak üçlü sıçrama testlerini sahada uygulayarak raporlayın.",
+    t: "İzokinetik testlerle birlikte spora dönüş vizesinin objektif ölçümüdür."
+  }
+};
+
+// --- ANA DATA REHABİLİTASYON PROGRAMI DIZISI ---
+const DATA = [
+  {
+    id: 1, label: "F1", full: "Salon başlangıcı", weeks: "Salon hafta 1–2  ·  Ameliyat sonrası hafta 7–8",
+    goal: "Salona alışma, temel kuvveti pekiştirme, şişliği kontrol altında tutma",
+    milestone: "Merdivenden yavaş ve kontrollü inebilmek",
+    days: [
+      { label: "Pzt & Cum", tag: "Alt vücut", ex: [
+        { n: "Sabit bisiklet", s: "15 dk", note: "hafif direnç" },
+        { n: "Leg press", s: "3 × 15", note: "ağrısız ROM, 45–60°" },
+        { n: "Hamstring curl (yatarak)", s: "3 × 12" },
+        { n: "Calf raise – çift bacak", s: "3 × 20" },
+        { n: "Hip abduction makinesi", s: "3 × 15" },
+        { n: "Hip adduction makinesi", s: "3 × 15" },
+        { n: "Diz altı rulo düzleştirme", s: "3 × 20" },
+        { n: "Düz bacak kaldırma", s: "3 × 15" },
+        { n: "Dört yönlü lastik", s: "3 × 20 her yön" },
+        { n: "Penguen dengesi", s: "3 × 30 sn" },
+        { n: "Buz", s: "20 dk", ice: true }
+      ]},
+      { label: "Sal & Per", tag: "Üst vücut + core", ex: [
+        { n: "Bench press / chest press makinesi", s: "3 × 12" },
+        { n: "Lat pulldown", s: "3 × 12" },
+        { n: "Shoulder press", s: "3 × 12" },
+        { n: "Bicep curl", s: "3 × 12" },
+        { n: "Tricep pushdown", s: "3 × 12" },
+        { n: "Plank (dirsek)", s: "3 × 30 sn" },
+        { n: "Bird-dog", s: "3 × 15 her yön" },
+        { n: "Side plank", s: "3 × 20 sn", note: "sağlam taraf alta" },
+        { n: "Crunch", s: "3 × 20" }
+      ]},
+      { label: "Çarşamba", tag: "Denge & propriosepsiyon", ex: [
+        { n: "Sabit bisiklet", s: "10 dk", note: "ısınma" },
+        { n: "Tek bacak duruş", s: "3 × 30 sn", note: "gözler açık" },
+        { n: "Terminal knee extension (lastikle)", s: "3 × 20" },
+        { n: "Mini step-up", s: "3 × 10", note: "5–10 cm" },
+        { n: "Lateral band walk", s: "3 × 15 her yön" },
+        { n: "Bisiklet pedal (sırt üstü)", s: "3 × 30 sn" },
+        { n: "Buz", s: "20 dk", ice: true }
+      ]},
+      { label: "Cumartesi", tag: "Aktif dinlenme", ex: [
+        { n: "Sabit bisiklet", s: "20 dk", note: "çok hafif" },
+        { n: "Quadriceps esneme", s: "3 × 30 sn" },
+        { n: "Hamstring esneme", s: "3 × 30 sn" },
+        { n: "Hip flexor esneme", s: "3 × 30 sn" },
+        { n: "Ayak bileği mobilizasyonu", s: "2 × 10 her yön" }
+      ]},
+      { label: "Pazar", tag: "Tam dinlenme", ex: [
+        { n: "Tam dinlenme", s: "—", note: "veya 15–20 dk düz yürüyüş" }
+      ]}
+    ]
+  },
+  {
+    id: 2, label: "F2", full: "Kuvvetlendirme", weeks: "Salon hafta 3–4  ·  Ameliyat sonrası hafta 9–10",
+    goal: "Kuvveti artırma, hareket açıklığını genişletme, fonksiyonel hareketlere geçiş",
+    milestone: "Merdivenden yavaş ve kontrollü inebilmek",
+    days: [
+      { label: "Pzt & Cum", tag: "Alt vücut kuvvet", ex: [
+        { n: "Sabit bisiklet", s: "20 dk", note: "direnci artır" },
+        { n: "Leg press", s: "4 × 12", note: "ağırlığı artır" },
+        { n: "Romanian deadlift (iki el)", s: "3 × 12", note: "hafif" },
+        { n: "Hamstring curl", s: "3 × 15" },
+        { n: "Hip thrust (bilateral)", s: "3 × 15" },
+        { n: "Calf raise (çift bacak)", s: "3 × 20" },
+        { n: "Step-up 15 cm", s: "3 × 10" },
+        { n: "Wall sit", s: "3 × 30 sn" },
+        { n: "Terminal knee extension", s: "3 × 20" },
+        { n: "Buz", s: "20 dk", ice: true }
+      ]},
+      { label: "Sal & Per", tag: "Üst vücut + core (ilerlemiş)", ex: [
+        { n: "Incline bench press", s: "4 × 10" },
+        { n: "Seated row", s: "4 × 10" },
+        { n: "Shoulder press", s: "4 × 10" },
+        { n: "Dumbbell curl", s: "3 × 12" },
+        { n: "Skull crusher", s: "3 × 12" },
+        { n: "Plank (dirsek) (ilerlemiş)", s: "3 × 45 sn" },
+        { n: "Dead bug", s: "3 × 10 her yön" },
+        { n: "Cable core rotation", s: "3 × 12", note: "hafif" },
+        { n: "Reverse crunch", s: "3 × 15" }
+      ]},
+      { label: "Çarşamba", tag: "Denge & nöromüsküler", ex: [
+        { n: "Sabit bisiklet", s: "15 dk", note: "ısınma" },
+        { n: "Denge tahtası (çift bacak)", s: "3 × 45 sn" },
+        { n: "Tek bacak deadlift (ağırlıksız)", s: "3 × 10" },
+        { n: "Lateral band walk (ağır lastik)", s: "3 × 15" },
+        { n: "Monster walk", s: "3 × 15 adım" },
+        { n: "Step-down 10 cm (kontrollü)", s: "3 × 10" },
+        { n: "Mini squat 60°", s: "3 × 15" },
+        { n: "Buz", s: "20 dk", ice: true }
+      ]},
+      { label: "Cumartesi", tag: "Aktif dinlenme + esneklik", ex: [
+        { n: "Sabit bisiklet", s: "25 dk" },
+        { n: "Tam vücut esneme", s: "20 dk" },
+        { n: "Foam roller", s: "—", note: "quad, IT band, hamstring" }
+      ]},
+      { label: "Pazar", tag: "Tam dinlenme", ex: [{ n: "Tam dinlenme", s: "—" }]}
+    ]
+  },
+  {
+    id: 3, label: "F3", full: "İleri kuvvetlendirme", weeks: "Salon hafta 5–8  ·  Ameliyat sonrası hafta 11–14",
+    goal: "Kas kütlesi ve güç artışı, tek bacak egzersizlerine başlangıç",
+    milestone: "Tek bacak egzersizlerini kontrollü yapabilmek",
+    days: [
+      { label: "Pzt & Cum", tag: "Alt vücut kuvvet (yüklü)", ex: [
+        { n: "Sabit bisiklet / elliptical", s: "25 dk" },
+        { n: "Leg press (ağır)", s: "4 × 10" },
+        { n: "Romanian deadlift (ağır)", s: "4 × 10" },
+        { n: "Bulgarian split squat", s: "3 × 10", note: "ön bacak işlemeli, hafif" },
+        { n: "Hamstring curl", s: "4 × 12" },
+        { n: "Hip thrust (bilateral, ağırlıklı)", s: "4 × 15" },
+        { n: "Step-up 25–30 cm", s: "3 × 12" },
+        { n: "Lateral step-up", s: "3 × 10" },
+        { n: "Calf raise (tek bacak başlangıcı)", s: "3 × 15" },
+        { n: "Buz", s: "20 dk", ice: true }
+      ]},
+      { label: "Sal & Per", tag: "Üst vücut + core (güç)", ex: [
+        { n: "Bench press", s: "4 × 8" },
+        { n: "Weighted pull-up / lat pulldown", s: "4 × 8" },
+        { n: "Arnold press", s: "3 × 10" },
+        { n: "Hammer curl", s: "3 × 12" },
+        { n: "Close-grip bench", s: "3 × 10" },
+        { n: "Ab wheel rollout", s: "3 × 10" },
+        { n: "Pallof press", s: "3 × 12" },
+        { n: "Copenhagen plank", s: "3 × 20 sn" }
+      ]},
+      { label: "Çarşamba", tag: "Nöromüsküler & propriosepsiyon", ex: [
+        { n: "Tek bacak denge (soft zemin)", s: "3 × 45 sn" },
+        { n: "Squat 70–80°", s: "3 × 15" },
+        { n: "BOSU ball çift bacak duruş", s: "3 × 30 sn" },
+        { n: "Lateral band walk (ağır)", s: "3 × 15" },
+        { n: "Mini lunge (statik, kısa mesafe)", s: "3 × 10" },
+        { n: "Terminal knee extension", s: "3 × 20" },
+        { n: "Buz", s: "20 dk", ice: true }
+      ]},
+      { label: "Cumartesi", tag: "Aktif dinlenme", ex: [
+        { n: "Elliptical veya bisiklet", s: "30 dk" },
+        { n: "Esneme + foam roller", s: "20 dk" }
+      ]},
+      { label: "Pazar", tag: "Tam dinlenme", ex: [{ n: "Tam dinlenme", s: "—" }]}
+    ]
+  },
+  {
+    id: 4, label: "F4", full: "Fonksiyonel güç", weeks: "Salon hafta 9–14  ·  Ameliyat sonrası ay 4–4.5",
+    goal: "Tek bacak güç egzersizleri, yürüyüş tam normalleşme, koşu protokolü hazırlığı",
+    milestone: "Tek bacak hareketlerde güven, koşuya hazırlık",
+    days: [
+      { label: "Pzt & Cum", tag: "Alt vücut – tek bacak odaklı", ex: [
+        { n: "Yürüyüş bandı / hafif koşu", s: "20–30 dk", note: "doktor onayı ile" },
+        { n: "Leg press (tek bacak başlangıcı)", s: "3 × 10" },
+        { n: "Single-leg Romanian deadlift", s: "3 × 10", note: "hafif ağırlık" },
+        { n: "Hip thrust (tek bacak)", s: "3 × 12" },
+        { n: "Bulgarian split squat (ağırlıklı)", s: "4 × 10" },
+        { n: "Lateral lunge", s: "3 × 10" },
+        { n: "Step-up 40 cm", s: "4 × 12" },
+        { n: "Hamstring curl (tek bacak geçişi)", s: "3 × 10" },
+        { n: "Buz", s: "20 dk", ice: true }
+      ]},
+      { label: "Sal & Per", tag: "Üst vücut + fonksiyonel core", ex: [
+        { n: "Barbell bench press", s: "4 × 8" },
+        { n: "Weighted pull-up", s: "4 × 6–8" },
+        { n: "Overhead press", s: "4 × 8" },
+        { n: "Dumbbell row", s: "3 × 10" },
+        { n: "Dips", s: "3 × 10" },
+        { n: "Dragon flag (yavaş)", s: "3 × 8" },
+        { n: "Weighted plank", s: "3 × 30 sn" },
+        { n: "Russian twist", s: "3 × 15" }
+      ]},
+      { label: "Çarşamba", tag: "Çeviklik & denge", ex: [
+        { n: "BOSU ball tek bacak denge", s: "3 × 45 sn" },
+        { n: "Lateral shuffle (lastikle)", s: "3 × 20 adım" },
+        { n: "Squat (tam derinlik hedefi)", s: "3 × 15" },
+        { n: "Box tap", s: "3 × 10", note: "kutunun üstüne hafif adım" },
+        { n: "Defensive shuffle", s: "3 × 15 sn" },
+        { n: "Mini cone agility", s: "3 tur" },
+        { n: "Buz", s: "20 dk", ice: true }
+      ]},
+      { label: "Cumartesi", tag: "Aktif dinlenme", ex: [
+        { n: "Elliptical", s: "30–35 dk" },
+        { n: "Yoga / esneme", s: "20 dk" }
+      ]},
+      { label: "Pazar", tag: "Tam dinlenme", ex: [{ n: "Tam dinlenme", s: "—" }]}
+    ]
+  },
+  {
+    id: 5, label: "F5", full: "Pliometrik & spora dönüş", weeks: "Salon hafta 15–24  ·  Ameliyat sonrası ay 5–7",
+    goal: "Patlayıcı güç, çeviklik, spora özgü hareketler",
+    milestone: "Koşu, zıplama, yön değiştirme hareketleri",
+    days: [
+      { label: "Pzt & Cum", tag: "Güç + pliometrik", ex: [
+        { n: "Koşu bandı", s: "20–30 dk", note: "artan hız" },
+        { n: "Barbell squat (tam derinlik)", s: "4 × 10" },
+        { n: "Leg press – tek bacak (ağır)", s: "4 × 8" },
+        { n: "Romanian deadlift", s: "4 × 10" },
+        { n: "Box jump 30 cm", s: "3 × 8", note: "6. aydan sonra" },
+        { n: "Jump squat", s: "3 × 8", note: "7. aydan sonra" },
+        { n: "Hip thrust (ağır)", s: "4 × 12" },
+        { n: "Buz", s: "20 dk", ice: true }
+      ]},
+      { label: "Sal & Per", tag: "Üst vücut + core (maksimum)", ex: [
+        { n: "Bench press (maksimum)", s: "5 × 5" },
+        { n: "Weighted pull-up (maksimum)", s: "5 × 5" },
+        { n: "Military press", s: "4 × 6" },
+        { n: "Barbell row", s: "4 × 6" },
+        { n: "Dips (ağırlıklı)", s: "3 × 8" },
+        { n: "Ab wheel", s: "3 × 12" },
+        { n: "Cable woodchop", s: "3 × 12" }
+      ]},
+      { label: "Çarşamba", tag: "Çeviklik & hız", ex: [
+        { n: "Sprint protokolü", s: "—", note: "doktor onayı ile, kademeli" },
+        { n: "Lateral cutting drills", s: "3 × 5 tur" },
+        { n: "Cone agility", s: "3 × 5 tur" },
+        { n: "Pliometrik lunge", s: "3 × 8" },
+        { n: "Sled push (hafif)", s: "3 × 20 m" },
+        { n: "Single leg hop (kontrollü)", s: "3 × 8" }
+      ]},
+      { label: "Cumartesi", tag: "Aktif dinlenme / esneklik", ex: [
+        { n: "Yüzme veya elliptical", s: "30 dk" },
+        { n: "Esneme + foam roller", s: "20 dk" }
+      ]},
+      { label: "Pazar", tag: "Tam dinlenme", ex: [{ n: "Tam dinlenme", s: "—" }]}
+    ]
+  },
+  {
+    id: 6, label: "F6", full: "Tam performans", weeks: "Ay 7–12  ·  Doktor onayı zorunlu",
+    goal: "Eski performansa tam dönüş, spor-spesifik antrenman, diz gücü tam normalleşme",
+    milestone: "Diz gücü ve güveni tam geri geldi — spora hazırsın",
+    days: [
+      { label: "Tüm hafta", tag: "Tam performans protokolü", ex: [
+        { n: "Sprint & yön değiştirme", s: "—", note: "tam hız" },
+        { n: "Barbell back squat", s: "—", note: "tam ağırlık" },
+        { n: "Olympic lift hazırlığı", s: "—", note: "squat clean vb." },
+        { n: "Çeviklik merdiveni", s: "—", note: "tüm patternler" },
+        { n: "Pliyometrik sıçrama", s: "—", note: "box jump, depth jump" },
+        { n: "Spora özgü driller", s: "—", note: "branşına göre kişiselleştir" },
+        { n: "Dönemsel hop testi", s: "—", note: "izokinetik değerlendirme ile takip" }
+      ]}
+    ]
+  }
+];
+
+let curPhase = 0;
+let curDay = 0;
+
+function renderPhases(){
+  const row = document.getElementById('phaseRow');
+  row.innerHTML = '';
+  DATA.forEach((p,i)=>{
+    const b = document.createElement('button');
+    b.className = 'phase-btn' + (i===curPhase?' active':'');
+    b.textContent = p.label + ' — ' + p.full;
+    b.onclick = ()=>{ curPhase=i; curDay=0; render(); };
+    row.appendChild(b);
+  });
+}
+
+function renderInfo(){
+  const p = DATA[curPhase];
+  document.getElementById('infoCard').innerHTML = `
+    <div class="info-weeks">${p.weeks}</div>
+    <div class="info-goal"><strong style="font-weight:600">Hedef:</strong> ${p.goal}</div>
+    <div class="info-milestone"><i class="ti ti-trophy" aria-hidden="true"></i>Kilometre taşı: ${p.milestone}</div>
+  `;
+}
+
+function renderDays(){
+  const p = DATA[curPhase];
+  const row = document.getElementById('dayRow');
+  row.innerHTML = '';
+  p.days.forEach((d,i)=>{
+    const b = document.createElement('button');
+    b.className = 'day-btn' + (i===curDay?' active':'');
+    b.innerHTML = `${d.label}<div class="day-tag">${d.tag}</div>`;
+    b.onclick = ()=>{ curDay=i; renderExercises(); renderDays(); };
+    row.appendChild(b);
+  });
+}
+
+function renderExercises(){
+  const day = DATA[curPhase].days[curDay];
+  const list = document.getElementById('exList');
+  list.innerHTML = '';
+  
+  day.ex.forEach((e, idx) => {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'ex-wrapper';
+    
+    const guide = EX_GUIDE[e.n] || { d: "Bu egzersizin detaylı uygulama rehberi için fizyoterapistinize danışın.", t: "Hareketi ağrı sınırında, kontrollü yapın." };
+
+    const row = document.createElement('div');
+    row.className = 'ex-row' + (e.ice?' ice-row':'');
+    row.innerHTML = `
+      <div>
+        <div class="ex-name">${e.n}</div>
+        ${e.note?`<div class="ex-note">${e.note}</div>`:''}
+      </div>
+      <div class="ex-sets ${e.ice?'ice-sets':''}">${e.s}</div>
+    `;
+
+    const details = document.createElement('div');
+    details.className = 'ex-details';
+    details.innerHTML = `
+      <div class="details-title">⚙️ Nasıl Yapılır?</div>
+      <div class="details-desc">${guide.d}</div>
+      <div class="details-tip"><strong>Kritik İpucu:</strong> ${guide.t}</div>
+    `;
+
+    row.onclick = () => {
+      const isOpen = wrapper.classList.contains('open');
+      document.querySelectorAll('.ex-wrapper').forEach(el => el.classList.remove('open'));
+      if (!isOpen) {
+        wrapper.classList.add('open');
+      }
+    };
+
+    wrapper.appendChild(row);
+    wrapper.appendChild(details);
+    list.appendChild(wrapper);
+  });
+}
+
+function render(){
+  renderPhases();
+  renderInfo();
+  renderDays();
+  renderExercises();
+}
+
+render();
+</script>
+
+</body>
+</html>
